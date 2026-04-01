@@ -1,0 +1,1 @@
+Repo for all mini projects and elective project
