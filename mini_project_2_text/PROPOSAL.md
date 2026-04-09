@@ -1,10 +1,10 @@
-## My Project Proposal
+## Project Proposal
 
 **What I'm building:**
 I'm building a Python program that analyzes the word frequency of a book and finds interesting patterns in the text.
 
 **Why I chose this:**
-I wanted to see what you can learn about a piece of writing just by counting and comparing words. It's a simple idea but the results can be surprising.
+One of the suggested projects.
 
 **Core features:**
 - Load a text file (a book from Project Gutenberg)
@@ -16,4 +16,4 @@ I wanted to see what you can learn about a piece of writing just by counting and
 **What I don't know yet:**
 - How to properly strip Project Gutenberg headers and footers from the text
 - What a good list of stop words looks like
-- How to make a bar chart with matplotlib
+- how to actually do this
