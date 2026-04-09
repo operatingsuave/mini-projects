@@ -46,5 +46,3 @@ python analyzer.py path/to/file.txt
 The whole program uses only built-in Python — `string`, `sys`, dictionaries, and lists. No external libraries.
 
 Doing it with plain dicts was straightforward. `counts.get(word, 0) + 1` is simple and clear. Sorting a dict by value with `sorted()` and a lambda was the trickiest part but still only one line.
-
-If I were to redo this with `pandas` or `collections.Counter`, the counting and sorting would be shorter, but I wouldn't have learned as much about how dictionaries work under the hood.

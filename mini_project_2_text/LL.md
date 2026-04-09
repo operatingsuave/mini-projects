@@ -24,4 +24,3 @@ If I kept working on this project, I would add:
 - Compare two books side by side
 - Detect the reading level of the text
 - Use `collections.Counter` to see how it compares to doing it manually
-- Add a word cloud visualization
