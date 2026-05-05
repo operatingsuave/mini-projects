@@ -7,6 +7,7 @@ Run from the terminal:
 """
 
 import json
+import math
 import os
 import sys
 import urllib.parse
@@ -93,17 +94,35 @@ def find_stop_near(place_name):
     return get_nearest_station(lat, lng)
 
 
+def haversine_meters(lat1, lng1, lat2, lng2):
+    """Great-circle distance between two coordinates, in meters."""
+    R = 6_371_000
+    phi1, phi2 = math.radians(lat1), math.radians(lat2)
+    dphi = math.radians(lat2 - lat1)
+    dlmb = math.radians(lng2 - lng1)
+    a = math.sin(dphi / 2) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(dlmb / 2) ** 2
+    return 2 * R * math.asin(math.sqrt(a))
+
+
 def find_stop_near_details(place_name):
     """Like find_stop_near but returns a dict with both sets of coordinates — for the Flask map."""
     place_lat, place_lng = get_lat_lng(place_name)
     attrs = _fetch_nearest_stop(place_lat, place_lng)
+    stop_lat = attrs.get("latitude")
+    stop_lng = attrs.get("longitude")
+    distance_m = (
+        haversine_meters(place_lat, place_lng, stop_lat, stop_lng)
+        if stop_lat is not None and stop_lng is not None
+        else None
+    )
     return {
         "stop": attrs.get("name", "Unknown stop"),
         "accessible": attrs.get("wheelchair_boarding") == 1,
         "place_lat": place_lat,
         "place_lng": place_lng,
-        "stop_lat": attrs.get("latitude"),
-        "stop_lng": attrs.get("longitude"),
+        "stop_lat": stop_lat,
+        "stop_lng": stop_lng,
+        "distance_m": distance_m,
     }
 
 

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ result.stop }} — Nearest MBTA Stop{% endblock %}
+{% block title %}{{ result.stop }} — Nearest MBTA stop{% endblock %}
 
 {% block head_extra %}
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet">
@@ -8,30 +8,23 @@
 {% endblock %}
 
 {% block content %}
-  <h1>Nearest MBTA Stop</h1>
-  <p class="lede">For <strong>{{ place }}</strong></p>
+  <p class="meta">Nearest MBTA stop to <span class="kv">{{ place }}</span></p>
+  <p class="stop-name">{{ result.stop }}</p>
 
-  <section class="card">
-    <p class="stop-name">{{ result.stop }}</p>
-    <p>
-      Wheelchair accessible:
-      {% if result.accessible %}
-        <span class="accessible">yes</span>
-      {% else %}
-        <span class="not-accessible">no (or not reported)</span>
-      {% endif %}
-    </p>
-    <p class="meta">
-      Searched from {{ "%.4f"|format(result.place_lat) }}, {{ "%.4f"|format(result.place_lng) }}
-      &middot; stop at {{ "%.4f"|format(result.stop_lat) }}, {{ "%.4f"|format(result.stop_lng) }}
-    </p>
-
-    {% if mapbox_token and result.stop_lat and result.stop_lng %}
-      <div id="map"></div>
+  <p class="meta">
+    Wheelchair accessible:
+    <span class="kv">{% if result.accessible %}yes{% else %}no{% endif %}</span>
+    {% if result.distance_m %}
+      &middot; <span class="kv">{{ "%.0f"|format(result.distance_m) }} m</span> away
     {% endif %}
+  </p>
 
-    <p style="margin-top:1.25rem;"><a class="back" href="/">&larr; Search another place</a></p>
-  </section>
+  {% if mapbox_token and result.stop_lat and result.stop_lng %}
+    <div id="map"></div>
+  {% endif %}
+
+  <div class="divider"></div>
+  <a href="/">Search another place</a>
 
   {% if mapbox_token and result.stop_lat and result.stop_lng %}
     <script>
@@ -41,7 +34,7 @@
 
       const map = new mapboxgl.Map({
         container: "map",
-        style: "mapbox://styles/mapbox/streets-v12",
+        style: "mapbox://styles/mapbox/light-v11",
         center: [
           (placeCoords[0] + stopCoords[0]) / 2,
           (placeCoords[1] + stopCoords[1]) / 2,
@@ -49,20 +42,10 @@
         zoom: 14,
       });
 
-      new mapboxgl.Marker({ color: "#3b82f6" })
-        .setLngLat(placeCoords)
-        .setPopup(new mapboxgl.Popup().setText({{ place|tojson }}))
-        .addTo(map);
+      new mapboxgl.Marker({ color: "#111" }).setLngLat(placeCoords).addTo(map);
+      new mapboxgl.Marker({ color: "#111" }).setLngLat(stopCoords).addTo(map);
 
-      new mapboxgl.Marker({ color: "#d23740" })
-        .setLngLat(stopCoords)
-        .setPopup(new mapboxgl.Popup().setText({{ result.stop|tojson }}))
-        .addTo(map);
-
-      map.fitBounds(
-        [placeCoords, stopCoords],
-        { padding: 60, maxZoom: 16, duration: 0 }
-      );
+      map.fitBounds([placeCoords, stopCoords], { padding: 60, maxZoom: 16, duration: 0 });
     </script>
   {% endif %}
 {% endblock %}

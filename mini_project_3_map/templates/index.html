@@ -1,21 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Nearest MBTA Stop</h1>
-  <p class="lede">Enter a place name or address in the Boston area and I'll find the closest MBTA stop.</p>
+  <h1>Nearest MBTA stop</h1>
+  <p class="lede">Enter a place or address in the Boston area.</p>
 
-  <form class="card" method="post" action="/">
-    <label for="place">Place name or address</label>
+  <form method="post" action="/">
+    <label for="place">Place</label>
     <input
       type="text"
       id="place"
       name="place"
-      placeholder="e.g. Boston Common"
+      placeholder="Boston Common"
       value="{{ place or '' }}"
       autofocus
       required
     >
-    <button type="submit">Find nearest stop</button>
+    <button type="submit">Find stop</button>
 
     {% if error %}
       <div class="error">{{ error }}</div>
