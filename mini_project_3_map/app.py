@@ -2,7 +2,7 @@
 
 Run from the terminal:
     python app.py
-Then open http://127.0.0.1:5000 in your browser.
+Then open http://127.0.0.1:5001 in your browser.
 """
 
 import os
@@ -51,4 +51,5 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Port 5001 — port 5000 is used by macOS AirPlay Receiver.
+    app.run(debug=True, port=5001)

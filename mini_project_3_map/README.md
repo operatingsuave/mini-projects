@@ -25,34 +25,30 @@ The pipeline lives in `mbta_helper.py` as plain Python functions you can run fro
 
 You'll need:
 
-- Python 3.9+
+- Python 3.9+ with Flask installed (`pip install flask`)
 - A Mapbox public token — sign up at [mapbox.com](https://mapbox.com) and copy the default `pk.…` token
 - (Optional) An MBTA API key — request one at [api-v3.mbta.com](https://api-v3.mbta.com); the app works without one but is rate-limited
 
-From inside the `mini_project_3_map` folder:
+Create a `.env` file in this folder with your tokens:
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-
-cp .env.example .env
-# open .env and paste your real MAPBOX_TOKEN (and MBTA_API_KEY if you have one)
+```
+MAPBOX_TOKEN=pk.your_real_token_here
+MBTA_API_KEY=your_mbta_key_here
 ```
 
 `.env` is gitignored so the keys never get committed.
 
 ## How to Run
 
-Web app:
+There's one app — `app.py`. Start it with:
 
 ```bash
-python app.py
+python3 app.py
 ```
 
-Then open [http://127.0.0.1:5000](http://127.0.0.1:5000).
+Then open [http://127.0.0.1:5001](http://127.0.0.1:5001).
 
-Or just the helper, from the terminal:
+`mbta_helper.py` is the supporting module that `app.py` imports. You can also run it directly as a quick terminal sanity check (no web server, just the API pipeline printing to stdout):
 
 ```bash
 python mbta_helper.py "Boston Common"
@@ -67,29 +63,17 @@ Looking up nearest MBTA stop to: Boston Common
   Wheelchair accessible: yes
 ```
 
-## Screenshots
-
-Home page (search form):
-
-![Home page](screenshots/home.png)
-
-Result page (stop, accessibility, distance, map):
-
-![Result page](screenshots/result.png)
-
 ## Project Structure
 
 ```
 mini_project_3_map/
 ├── app.py              # Flask app (one route, GET + POST)
-├── mbta_helper.py      # API pipeline; runnable on its own
-├── requirements.txt    # Flask
+├── mbta_helper.py      # API pipeline; imported by app.py, also runnable on its own
 ├── templates/
 │   ├── base.html       # shared layout + minimal CSS
 │   ├── index.html      # search form
 │   └── result.html     # stop info + Mapbox map
-├── screenshots/
-├── .env.example
+├── .env                # your API tokens (gitignored)
 ├── .gitignore
 ├── PROPOSAL.md
 └── LL.md
