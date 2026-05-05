@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}Nearest MBTA Stop{% endblock %}</title>
+  <style>
+    :root {
+      --bg: #f7f7f5;
+      --fg: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #d23740;
+      --card: #fff;
+      --border: #e5e5e2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.5;
+    }
+    .wrap {
+      max-width: 720px;
+      margin: 4rem auto;
+      padding: 0 1.25rem;
+    }
+    h1 { font-size: 1.75rem; margin: 0 0 0.25rem; }
+    h2 { font-size: 1.25rem; margin: 1.5rem 0 0.5rem; }
+    p.lede { color: var(--muted); margin-top: 0; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    label { display: block; font-weight: 600; margin-bottom: 0.4rem; }
+    input[type=text] {
+      width: 100%;
+      padding: 0.7rem 0.85rem;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #fff;
+    }
+    input[type=text]:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+    button {
+      margin-top: 0.85rem;
+      padding: 0.7rem 1.1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background: var(--accent);
+      border: 0;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover { filter: brightness(0.95); }
+    .error {
+      margin-top: 1rem;
+      padding: 0.75rem 0.9rem;
+      background: #fdecec;
+      border: 1px solid #f3c3c3;
+      color: #8a1f25;
+      border-radius: 6px;
+      font-size: 0.95rem;
+    }
+    .stop-name { font-size: 1.5rem; font-weight: 600; margin: 0; }
+    .accessible { color: #1f7a3a; font-weight: 600; }
+    .not-accessible { color: var(--muted); }
+    .meta { color: var(--muted); font-size: 0.95rem; }
+    a.back { color: var(--accent); text-decoration: none; font-weight: 600; }
+    a.back:hover { text-decoration: underline; }
+    #map { height: 360px; border-radius: 10px; margin-top: 1rem; }
+  </style>
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+  <main class="wrap">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

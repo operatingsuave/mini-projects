@@ -56,8 +56,8 @@ def get_lat_lng(place_name):
     return lat, lng
 
 
-def get_nearest_station(lat, lng):
-    """Use the MBTA V3 API to find the nearest stop. Returns (stop_name, wheelchair_accessible)."""
+def _fetch_nearest_stop(lat, lng):
+    """Internal helper: query MBTA V3 and return the raw attributes dict for the nearest stop."""
     params = {
         "filter[latitude]": lat,
         "filter[longitude]": lng,
@@ -75,7 +75,12 @@ def get_nearest_station(lat, lng):
     if not stops:
         raise ValueError(f"No MBTA stops found near ({lat}, {lng})")
 
-    attrs = stops[0]["attributes"]
+    return stops[0]["attributes"]
+
+
+def get_nearest_station(lat, lng):
+    """Use the MBTA V3 API to find the nearest stop. Returns (stop_name, wheelchair_accessible)."""
+    attrs = _fetch_nearest_stop(lat, lng)
     name = attrs.get("name", "Unknown stop")
     # wheelchair_boarding: 0 = no info, 1 = accessible, 2 = not accessible
     accessible = attrs.get("wheelchair_boarding") == 1
@@ -86,6 +91,20 @@ def find_stop_near(place_name):
     """End-to-end: place name -> nearest MBTA stop. Returns (stop_name, wheelchair_accessible)."""
     lat, lng = get_lat_lng(place_name)
     return get_nearest_station(lat, lng)
+
+
+def find_stop_near_details(place_name):
+    """Like find_stop_near but returns a dict with both sets of coordinates — for the Flask map."""
+    place_lat, place_lng = get_lat_lng(place_name)
+    attrs = _fetch_nearest_stop(place_lat, place_lng)
+    return {
+        "stop": attrs.get("name", "Unknown stop"),
+        "accessible": attrs.get("wheelchair_boarding") == 1,
+        "place_lat": place_lat,
+        "place_lng": place_lng,
+        "stop_lat": attrs.get("latitude"),
+        "stop_lng": attrs.get("longitude"),
+    }
 
 
 def main():
